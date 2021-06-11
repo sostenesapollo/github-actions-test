@@ -6,39 +6,12 @@ on:
       - master
 
 jobs:
-  test:
-
+  deployApp:
+    name: deployApp
     runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install and test
-      run: npm install
-      env:
-        CI: true
-
-  deploy:
-    needs: [test]
-    runs-on: self-hosted
-
-    steps:
-    - name: SSH and deploy node app
-      uses: sostenesapollo/github-actions-test@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd /root/actions-runner/_work/github-actions-test/github-actions-test
-          git pull origin master
-          npm install
-          pm2 restart main
+      - uses: sostenesapollo/github-actions-test@master
+    run: cd /root/actions-runner/_work/github-actions-test/github-actions-test
+    run: git pull origin master
+    run: npm install
+    run: pm2 restart main 
