@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Copy file via scp
-        uses: blubots/wpbot
+        uses: blubots/wpbot@master
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
@@ -21,7 +21,7 @@ jobs:
           target: "/opt/app"
 
       - name: Executing remote  command
-        uses: appleboy/ssh-action@master
+        uses: blubots/wpbot@master
         with:
           host: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
