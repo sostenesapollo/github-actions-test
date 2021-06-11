@@ -1,17 +1,25 @@
-name: Node Github CI
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  deployApp:
-    name: deployApp
-    runs-on: self-hosted
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [112.x]
+
     steps:
-      - uses: sostenesapollo/github-actions-test@master
-    run: cd /root/actions-runner/_work/github-actions-test/github-actions-test
-    run: git pull origin master
-    run: npm install
-    run: pm2 restart main 
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: pm2 restart main
