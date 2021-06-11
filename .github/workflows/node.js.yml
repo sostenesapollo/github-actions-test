@@ -38,7 +38,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd ~/github-actions-test
+          cd /root/actions-runner/_work/github-actions-test/github-actions-test
           git pull origin master
           npm install
           pm2 restart main
