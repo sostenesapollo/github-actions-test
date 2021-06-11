@@ -1,24 +1,26 @@
-name: Deploying
-
-on:
-  push:
-    branches: [ master ]
-
-jobs: 
-  deploy:
+jobs:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout files    
-        uses: actions/checkout@v2
-        
-      - name: Get tag name
-        uses: olegtarasov/get-tag@v2
-        
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+      - uses: actions/checkout@v1
+
+      - name: Copy file via scp
+        uses: blubots/wpbot
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
         with:
-         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-         
-      - name: Provision Droplet and deploy container
-        run: doctl compute droplet create "$GIT_TAG_NAME" --image docker-18-04 --size s-1vcpu-1gb --region nyc1 --user-data-file deploy.sh --wait
+          source: "."
+          target: "/opt/app"
+
+      - name: Executing remote  command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: cat /opt/app/README.md
