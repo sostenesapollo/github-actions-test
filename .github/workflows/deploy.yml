@@ -21,7 +21,7 @@ jobs:
           target: "/opt/app"
 
       - name: Executing remote  command
-        uses: blubots/wpbot@master
+        uses: blubots/wpbot
         with:
           host: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
