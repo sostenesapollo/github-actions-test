@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Copy file via scp
-        uses: blubots/wpbot@master
+        uses: blubots/wpbot
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
