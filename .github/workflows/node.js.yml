@@ -1,0 +1,13 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    steps:
+    - uses: actions/checkout@v2    
+    - run: npm install
+    - run: npm install pm2 -g
+    - run: pm2 kill && pm2 start main.js
